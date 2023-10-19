@@ -1,4 +1,4 @@
-# Metabolic subtyping of cancer patient data from gene expression data
+# Metabolic subtyping of patient tumors from gene expression data
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
