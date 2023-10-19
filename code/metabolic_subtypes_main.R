@@ -23,10 +23,10 @@ source("code/kmeans_metab_clust_survival.R")
 ###############################################################################
 
 # CPTAC-HNSCC
-gene_exp_cptac_hnscc <- read.table("data/HS_CPTAC_HNSCC_RNAseq_RSEM_UQ_log2_Normal.cct",
+gene_exp_cptac_hnscc <- read.table("data/CPTAC_HNSCC/HS_CPTAC_HNSCC_RNAseq_RSEM_UQ_log2_Normal.cct",
                              sep="\t", stringsAsFactors = F, header = T) %>%
   column_to_rownames("Idx")
-clinical_cptac_hnscc  <- read.table("data/HS_CPTAC_HNSCC_CLI.tsi",
+clinical_cptac_hnscc  <- read.table("data/CPTAC_HNSCC/HS_CPTAC_HNSCC_CLI.tsi",
                              sep="\t", header = T, stringsAsFactors = F)
 clinical_cptac_hnscc  <- clinical_cptac_hnscc [-1,] %>% 
   mutate(case_id=str_replace_all(case_id, "-", "\\."),
@@ -37,7 +37,7 @@ clinical_cptac_hnscc  <- clinical_cptac_hnscc [-1,] %>%
 
 
 # TCGA-ACC
-gene_exp_tcga_acc <- read.table("data/ACC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+gene_exp_tcga_acc <- read.table("data/TCGA_ACC/ACC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
                                 sep="\t", stringsAsFactors = F, header = T)
 gene_exp_tcga_acc <- gene_exp_tcga_acc[-1,] %>% 
   mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
@@ -46,7 +46,7 @@ gene_exp_tcga_acc <- gene_exp_tcga_acc[-1,] %>%
   mutate_if(is.character, as.numeric)
 colnames(gene_exp_tcga_acc) <- colnames(gene_exp_tcga_acc) %>% 
   str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
-clinical_cptac_acc  <- read.table("data/HS_CPTAC_ACC_CLI.tsi",
+clinical_cptac_acc  <- read.table("data/TCGA_ACC/HS_CPTAC_ACC_CLI.tsi",
                                     sep="\t", header = T, stringsAsFactors = F) %>% 
   column_to_rownames("attrib_name") %>% 
   t() %>% 
@@ -57,7 +57,7 @@ clinical_cptac_acc  <- clinical_cptac_acc %>%
          overall_free_status=as.numeric(status))
 
 # TCGA-UVM
-gene_exp_tcga_uvm <- read.table("data/UVM.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+gene_exp_tcga_uvm <- read.table("data/TCGA_UVM/UVM.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
                                 sep="\t", stringsAsFactors = F, header = T)
 gene_exp_tcga_uvm <- gene_exp_tcga_uvm[-1,] %>% 
   mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
@@ -66,7 +66,7 @@ gene_exp_tcga_uvm <- gene_exp_tcga_uvm[-1,] %>%
   mutate_if(is.character, as.numeric)
 colnames(gene_exp_tcga_uvm) <- colnames(gene_exp_tcga_uvm) %>% 
   str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
-clinical_cptac_uvm  <- read.table("data/HS_CPTAC_UVM_CLI.tsi",
+clinical_cptac_uvm  <- read.table("data/TCGA_UVM/HS_CPTAC_UVM_CLI.tsi",
                                   sep="\t", header = T, stringsAsFactors = F) %>% 
   column_to_rownames("attrib_name") %>% 
   t() %>% 
@@ -77,7 +77,7 @@ clinical_cptac_uvm  <- clinical_cptac_uvm %>%
          overall_free_status=as.numeric(status))
 
 # TCGA-LAML
-gene_exp_tcga_laml <- read.table("data/LAML.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+gene_exp_tcga_laml <- read.table("data/TCGA_LAML/LAML.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
                                 sep="\t", stringsAsFactors = F, header = T)
 gene_exp_tcga_laml <- gene_exp_tcga_laml[-1,] %>% 
   mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
@@ -86,7 +86,7 @@ gene_exp_tcga_laml <- gene_exp_tcga_laml[-1,] %>%
   mutate_if(is.character, as.numeric)
 colnames(gene_exp_tcga_laml) <- colnames(gene_exp_tcga_laml) %>% 
   str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
-clinical_cptac_laml  <- read.table("data/HS_CPTAC_LAML_CLI.tsi",
+clinical_cptac_laml  <- read.table("data/TCGA_LAML/HS_CPTAC_LAML_CLI.tsi",
                                   sep="\t", header = T, stringsAsFactors = F) %>% 
   column_to_rownames("attrib_name") %>% 
   t() %>% 
@@ -97,16 +97,16 @@ clinical_cptac_laml  <- clinical_cptac_laml %>%
          overall_free_status=as.numeric(status))
 
 # CPTAC-COAD data:
-gene_exp_cptac_coad <- read.table("data/Human__CPTAC_COAD__UNC__RNAseq__HiSeq_RNA__03_01_2017__BCM__Gene__BCM_RSEM_UpperQuartile_log2.cct",
+gene_exp_cptac_coad <- read.table("data/CPTAC_COAD/Human__CPTAC_COAD__UNC__RNAseq__HiSeq_RNA__03_01_2017__BCM__Gene__BCM_RSEM_UpperQuartile_log2.cct",
                                    sep="\t", stringsAsFactors = F, header = T) %>%
   column_to_rownames("attrib_name") 
 # CPTAC-COAD: There is no survival days in survival data
 
 # TCGA-COAD data:
-gene_exp_tcga_coad <- read.table(gzfile("/home/benedek_danko/Downloads/Human__TCGA_COADREAD__UNC__RNAseq__HiSeq_RNA__01_28_2016__BI__Gene__Firehose_RSEM_log2.cct.gz"), 
+gene_exp_tcga_coad <- read.table(gzfile("data/TCGA_COAD/Human__TCGA_COADREAD__UNC__RNAseq__HiSeq_RNA__01_28_2016__BI__Gene__Firehose_RSEM_log2.cct.gz"), 
                                  sep="\t", stringsAsFactors = F, header = T) %>% 
   column_to_rownames("attrib_name")
-clinical_tcga_coad  <- read.table("data/HS_CPTAC_TCGA_COAD_CLI.tsi",
+clinical_tcga_coad  <- read.table("data/TCGA_COAD/HS_CPTAC_TCGA_COAD_CLI.tsi",
                                    sep="\t", header = T, stringsAsFactors = F) %>% 
   column_to_rownames("attrib_name") %>% 
   t() %>% 
