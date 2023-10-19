@@ -1,5 +1,7 @@
 # Metabolic subtyping of cancer patient data from gene expression data
 
+[LinkedOmics](https://www.linkedomics.org/login.php) is a great resource of several cancer types omics data. Datasets in the `data/` folder were downloaded from there.
+
 ## Plans
 
 1. Run GSVA data on cancer patient gene expression data using KEGG metabolic pathways.
