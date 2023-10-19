@@ -11,12 +11,11 @@ setwd("/home/benedek_danko/R/genexp_metabolic_subtyping")
 # Load functions and libraries
 ###############################################################################
 
-library("grid")
 library("tidyverse")
 
-source("code/run_gsva_metabolic.R")
-source("code/kmeans_gsva_metabolic.R")
-source("code/kmeans_metab_clust_survival.R")
+source("R/run_gsva_metabolic.R")
+source("R/kmeans_gsva_metabolic.R")
+source("R/kmeans_metab_clust_survival.R")
 
 ###############################################################################
 # Load data
