@@ -13,9 +13,9 @@
 
 ## Test data sets
 
-- [CPTAC-HNSCC](https://www.linkedomics.org/data_download/CPTAC-HNSCC/): `data/CPTAC_HNSCC`
-- [CPTAC-COAD](https://www.linkedomics.org/data_download/CPTAC-COAD/): `data/CPTAC_COAD`
-- [TCGA-COAD](https://www.linkedomics.org/data_download/TCGA-COADREAD/): `data/TCGA_COAD`
-- [TCGA-LAML](https://www.linkedomics.org/data_download/TCGA-LAML/): `data/TCGA_LAML`
-- [TCGA-UVM](https://www.linkedomics.org/data_download/TCGA-UVM/): `data/TCGA_UVM`
-- [TCGA-ACC](https://www.linkedomics.org/data_download/TCGA-ACC/): `data/TCGA_ACC`
+- [CPTAC-HNSCC](https://www.linkedomics.org/data_download/CPTAC-HNSCC/): `data/CPTAC_HNSCC/`
+- [CPTAC-COAD](https://www.linkedomics.org/data_download/CPTAC-COAD/): `data/CPTAC_COAD/`
+- [TCGA-COAD](https://www.linkedomics.org/data_download/TCGA-COADREAD/): `data/TCGA_COAD/`
+- [TCGA-LAML](https://www.linkedomics.org/data_download/TCGA-LAML/): `data/TCGA_LAML/`
+- [TCGA-UVM](https://www.linkedomics.org/data_download/TCGA-UVM/): `data/TCGA_UVM/`
+- [TCGA-ACC](https://www.linkedomics.org/data_download/TCGA-ACC/): `data/TCGA_ACC/`
