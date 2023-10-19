@@ -1,0 +1,4 @@
+Package: gMPS
+Type: Package
+Title: Metabolic subtyping of patient tumors from gene expression data
+Version: 0.0.1.0
