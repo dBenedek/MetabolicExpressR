@@ -1,15 +1,26 @@
-kmeans_gsva_metabolic <- function(gsva_data){
+kmeans_gsva_metabolic <- function(gsva_data,
+                                  kegg_gs,
+                                  user_def_k=FALSE,
+                                  k=NULL){
   
   library("tidyverse")
+  library("ComplexHeatmap")
+  library("viridis")
   library("NbClust")
-  library("pheatmap")
-  library("fgsea")
   
-  # Runs K-means clustering with the optimal K on the GSVA KEGG metabolic data
+  # Runs K-means clustering with the optimal K (or user defined k)
+  # on the GSVA KEGG metabolic data
   # and assigns cluster membership to samples
   
-  # Load gene set data:
-  kegg_gs <- gmtPathways("/home/benedek_danko/R/genexp_metabolic_subtyping/data/kegg_metabolic_human_20211026.gmt")
+  # Check arguments:
+  if(!is.matrix(gsva_data)) stop("gsva_data must be an N x M matrix with N pathways and M samples")
+  if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
+  if(!user_def_k %in% c(TRUE, FALSE)) stop("user_def_k must be either FALSE (default) or TRUE")
+  if(!is.null(k)){
+    if(!is.numeric(k) | k > ncol(gsva_data)) stop("k should be numeric and smaller than the number of samples")
+  }
+  
+  if (isFALSE(user_def_k)){
   
   # Define optimal number of clusters:
   selected <- c("kl", "ch", "hartigan", "db", 
@@ -31,7 +42,7 @@ kmeans_gsva_metabolic <- function(gsva_data){
   best_nc <- lapply(results, function(x) x$Best.nc)
   names(best_nc) <- selected
   # Optimal number of k:
-  optimal_k <- best_nc[!sapply(best_nc,is.null)] %>% 
+  k <- best_nc[!sapply(best_nc,is.null)] %>% 
     as.data.frame() %>% 
     t() %>% 
     as.data.frame() %>% 
@@ -41,11 +52,12 @@ kmeans_gsva_metabolic <- function(gsva_data){
     arrange(desc(count)) %>% 
     head(1) %>% 
     pull(Number_clusters)
+  }
   
   # Perform K-means clustering:
   set.seed(123)
   km_res <- kmeans(t(gsva_data), 
-                   optimal_k, 
+                   k, 
                    nstart = 100,
                    iter.max = 100)
   
