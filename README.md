@@ -6,7 +6,7 @@
 
 ## Features
 
-1. Run GSVA data on cancer patient gene expression data using KEGG metabolic pathways.
+1. Run GSVA on cancer patient gene expression data using KEGG metabolic pathways.
 2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data.
 3. Planned: Summarize pathway activity per cluster: e.g. mean pathway activity per cluster, or do differential testing.
 4. Perform KM analysis with clusters if survival data is present.
