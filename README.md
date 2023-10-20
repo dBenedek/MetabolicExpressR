@@ -4,6 +4,14 @@
 
 A detailed tutorial can be found [here](https://github.com/dBenedek/genexp_metabolic_subtyping/blob/main/vignettes/tutorial.Rmd).
 
+## Installation
+
+Clone the repository:
+
+```sh
+git clone https://github.com/dBenedek/genexp_metabolic_subtyping.git && cd genexp_metabolic_subtyping
+```
+
 ## Features
 
 1. Perform [GSVA](https://doi.org/10.1186/1471-2105-14-7) on cancer patient gene expression data using [KEGG metabolic pathways](https://www.genome.jp/kegg/pathway.html#metabolism).
