@@ -1,7 +1,7 @@
 run_gsva_metabolic <- function(gene_exp_data,
-                               kcdf){
+                               kcdf,
+                               kegg_gs){
   library("GSVA")
-  library("fgsea")
   library("parallel")
   
   # Performs GSVA with the KEGG metabolic gene sets on the normalized, filtered
@@ -9,9 +9,7 @@ run_gsva_metabolic <- function(gene_exp_data,
   
   if(!is.data.frame(gene_exp_data)) stop("gene_exp_data must be a dataframe")
   if(!is.character(kcdf)) stop('kcdf must be a character ("Gaussian" or "Poisson")')
-  
-  # Load gene set data:
-  kegg_gs <- gmtPathways("/home/benedek_danko/R/genexp_metabolic_subtyping/data/kegg_metabolic_human_20211026.gmt")
+  if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
   
   # Filter rows with 0 variance:
   genes_var <- apply(gene_exp_data, 1, var)
