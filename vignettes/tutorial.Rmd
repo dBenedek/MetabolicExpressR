@@ -1,0 +1,294 @@
+---
+title: "Metabolic subtyping of patient tumors from gene expression data"
+author: "Benedek Danko"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{genexp_metabolic_subtyping}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                    fig.width=12,
+                    fig.height=6,
+                    warning=FALSE,
+                    message=FALSE,
+                    tidy = TRUE)
+```
+
+# Metabolic subtyping of patient tumors from gene expression data
+
+This package aims to perform metabolic pathway-based subytping of patient tumor samples from gene expression data.    
+
+The main steps are:    
+1. Perform GSVA on cancer patient gene expression data using KEGG metabolic pathways.    
+2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or can be user specified.    
+3. Summarize pathway activity per cluster: e.g. mean pathway activity per cluster, or do differential testing.    
+4. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.    
+
+## Introduction
+
+...
+
+## Load libraries and test data
+
+```{r load, message=FALSE, warning=FALSE}
+# Set wd to current location:
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+########## Load source codes and libraries
+
+library("tidyverse")
+library("fgsea")
+
+source("../R/run_gsva_metabolic.R")
+source("../R/kmeans_gsva_metabolic.R")
+source("../R/kmeans_metab_clust_survival.R")
+source("../R/plot_mean_pathway_activity.R")
+
+########## Load data
+
+# KEGG metabolic pathways gene set:
+kegg_gs <- gmtPathways("../data/kegg_metabolic_human_20211026.gmt")
+
+# CPTAC-HNSCC
+gene_exp_cptac_hnscc <- read.table("../data/CPTAC_HNSCC/HS_CPTAC_HNSCC_RNAseq_RSEM_UQ_log2_Normal.cct",
+                             sep="\t", stringsAsFactors = F, header = T) %>%
+  column_to_rownames("Idx")
+clinical_cptac_hnscc  <- read.table("../data/CPTAC_HNSCC/HS_CPTAC_HNSCC_CLI.tsi",
+                             sep="\t", header = T, stringsAsFactors = F)
+clinical_cptac_hnscc  <- clinical_cptac_hnscc [-1,] %>% 
+  mutate(case_id=str_replace_all(case_id, "-", "\\."),
+         overall_survival=as.numeric(overall_survival),
+         overall_free_status=as.numeric(overall_free_status),
+         progression_free_status=as.numeric(progression_free_status),
+         progression_free_survival=as.numeric(progression_free_survival))
+
+
+# TCGA-ACC
+gene_exp_tcga_acc <- read.table("../data/TCGA_ACC/ACC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+                                sep="\t", stringsAsFactors = F, header = T)
+gene_exp_tcga_acc <- gene_exp_tcga_acc[-1,] %>% 
+  mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
+  filter(Hybridization.REF!="?" & Hybridization.REF!= "SLC35E2") %>% 
+  column_to_rownames("Hybridization.REF") %>% 
+  mutate_if(is.character, as.numeric)
+colnames(gene_exp_tcga_acc) <- colnames(gene_exp_tcga_acc) %>% 
+  str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
+clinical_cptac_acc  <- read.table("../data/TCGA_ACC/HS_CPTAC_ACC_CLI.tsi",
+                                    sep="\t", header = T, stringsAsFactors = F) %>% 
+  column_to_rownames("attrib_name") %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("case_id")
+clinical_cptac_acc  <- clinical_cptac_acc %>% 
+  mutate(overall_survival=as.numeric(overall_survival),
+         overall_free_status=as.numeric(status))
+
+# TCGA-UVM
+gene_exp_tcga_uvm <- read.table("../data/TCGA_UVM/UVM.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+                                sep="\t", stringsAsFactors = F, header = T)
+gene_exp_tcga_uvm <- gene_exp_tcga_uvm[-1,] %>% 
+  mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
+  filter(Hybridization.REF!="?" & Hybridization.REF!= "SLC35E2") %>% 
+  column_to_rownames("Hybridization.REF") %>% 
+  mutate_if(is.character, as.numeric)
+colnames(gene_exp_tcga_uvm) <- colnames(gene_exp_tcga_uvm) %>% 
+  str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
+clinical_cptac_uvm  <- read.table("../data/TCGA_UVM/HS_CPTAC_UVM_CLI.tsi",
+                                  sep="\t", header = T, stringsAsFactors = F) %>% 
+  column_to_rownames("attrib_name") %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("case_id")
+clinical_cptac_uvm  <- clinical_cptac_uvm %>% 
+  mutate(overall_survival=as.numeric(overall_survival),
+         overall_free_status=as.numeric(status))
+
+# TCGA-LAML
+gene_exp_tcga_laml <- read.table("../data/TCGA_LAML/LAML.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
+                                sep="\t", stringsAsFactors = F, header = T)
+gene_exp_tcga_laml <- gene_exp_tcga_laml[-1,] %>% 
+  mutate(Hybridization.REF=str_replace(Hybridization.REF, "\\|\\d+$", "")) %>% 
+  filter(Hybridization.REF!="?" & Hybridization.REF!= "SLC35E2") %>% 
+  column_to_rownames("Hybridization.REF") %>% 
+  mutate_if(is.character, as.numeric)
+colnames(gene_exp_tcga_laml) <- colnames(gene_exp_tcga_laml) %>% 
+  str_extract("TCGA\\.[\\w\\d]{2}\\.[\\w\\d]{4}")
+clinical_cptac_laml  <- read.table("../data/TCGA_LAML/HS_CPTAC_LAML_CLI.tsi",
+                                  sep="\t", header = T, stringsAsFactors = F) %>% 
+  column_to_rownames("attrib_name") %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("case_id")
+clinical_cptac_laml  <- clinical_cptac_laml %>% 
+  mutate(overall_survival=as.numeric(overall_survival),
+         overall_free_status=as.numeric(status))
+
+# CPTAC-COAD data:
+gene_exp_cptac_coad <- read.table("../data/CPTAC_COAD/Human__CPTAC_COAD__UNC__RNAseq__HiSeq_RNA__03_01_2017__BCM__Gene__BCM_RSEM_UpperQuartile_log2.cct",
+                                   sep="\t", stringsAsFactors = F, header = T) %>%
+  column_to_rownames("attrib_name") 
+# CPTAC-COAD: There is no survival days in survival data
+
+# TCGA-COAD data:
+gene_exp_tcga_coad <- read.table(gzfile("../data/TCGA_COAD/Human__TCGA_COADREAD__UNC__RNAseq__HiSeq_RNA__01_28_2016__BI__Gene__Firehose_RSEM_log2.cct.gz"), 
+                                 sep="\t", stringsAsFactors = F, header = T) %>% 
+  column_to_rownames("attrib_name")
+clinical_tcga_coad  <- read.table("../data/TCGA_COAD/HS_CPTAC_TCGA_COAD_CLI.tsi",
+                                   sep="\t", header = T, stringsAsFactors = F) %>% 
+  column_to_rownames("attrib_name") %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("case_id")
+clinical_tcga_coad  <- clinical_tcga_coad %>% 
+  mutate(overall_survival=as.numeric(overall_survival),
+         overall_free_status=as.numeric(status))
+```
+
+## Perforom GSVA on gene expression data
+
+[GSVA](https://doi.org/10.1186/1471-2105-14-7): gene set variation analysis for microarray and RNA-Seq data    
+This might take some time, especially for larger (n > 100) data sets.
+
+```{r run_gsva, message=FALSE, warning=FALSE}
+# CPTAC-HNSC data:
+gsva_metab_cptac_hnscc  <- run_gsva_metabolic(gene_exp_cptac_hnscc,
+                                              kcdf="Gaussian",
+                                              kegg_gs = kegg_gs)
+
+# TCGA-ACC data:
+gsva_metab_tcga_acc <- run_gsva_metabolic(gene_exp_tcga_acc,
+                                       kcdf="Gaussian",
+                                              kegg_gs = kegg_gs)
+
+# TCGA-UVM data:
+gsva_metab_tcga_uvm <- run_gsva_metabolic(gene_exp_tcga_uvm,
+                                     kcdf="Gaussian",
+                                              kegg_gs = kegg_gs)
+
+# TCGA-LAML data:
+gsva_metab_tcga_laml <- run_gsva_metabolic(gene_exp_tcga_laml,
+                                     kcdf="Gaussian",
+                                              kegg_gs = kegg_gs)
+
+# TCGA-COAD data:
+gsva_metab_tcga_coad <- run_gsva_metabolic(gene_exp_tcga_coad,
+                                           kcdf="Gaussian",
+                                           kegg_gs = kegg_gs)
+
+# CPTAC-COAD data:
+gsva_metab_cptac_coad <- run_gsva_metabolic(gene_exp_cptac_coad,
+                                           kcdf="Gaussian",
+                                              kegg_gs = kegg_gs)
+```
+
+## K-means clustering on the GSVA matrix
+
+It is recommended to use the optimal number of k for the clustering step. This is selected based on several indices included in the `NbClust` R library. Otherwise, you can set the parameters `user_def_k = TRUE` and `k = ...` in the `kmeans_gsva_metabolic()` function.
+
+```{r k_means, message=FALSE, warning=FALSE, fig.width=10, fig.height=8, results='hide', fig.show='hide'}
+# CPTAC-HNSC data:
+kmeans_clusters_cptac_hnscc <- kmeans_gsva_metabolic(gsva_metab_cptac_hnscc,
+                                              kegg_gs = kegg_gs)
+# TCGA-ACC data:
+kmeans_clusters_tcga_acc <- kmeans_gsva_metabolic(gsva_metab_tcga_acc,
+                                              kegg_gs = kegg_gs)
+# TCGA-UVM data:
+kmeans_clusters_tcga_uvm <- kmeans_gsva_metabolic(gsva_metab_tcga_uvm,
+                                              kegg_gs = kegg_gs)
+
+# TCGA-LAML data:
+kmeans_clusters_tcga_laml <- kmeans_gsva_metabolic(gsva_metab_tcga_laml,
+                                              kegg_gs = kegg_gs)
+
+# TCGA-COAD data:
+kmeans_clusters_tcga_coad <- kmeans_gsva_metabolic(gsva_metab_tcga_coad,
+                                                   kegg_gs = kegg_gs,
+                                                   user_def_k=TRUE,
+                                                   k=2)
+
+# CPTAC-COAD data:
+kmeans_clusters_cptac_coad <- kmeans_gsva_metabolic(gsva_metab_cptac_coad,
+                                              kegg_gs = kegg_gs)
+```
+
+```{r kmeans_heatmaps, message=FALSE, warning=FALSE, fig.width=10, fig.height=9}
+kmeans_clusters_cptac_hnscc$heatmap
+kmeans_clusters_tcga_acc$heatmap
+kmeans_clusters_tcga_uvm$heatmap
+kmeans_clusters_tcga_laml$heatmap
+kmeans_clusters_tcga_coad$heatmap
+kmeans_clusters_cptac_coad$heatmap
+```
+
+## Barplot of mean pathway activity per cluster
+
+```{r pathways_mean_barplot, message=FALSE, warning=FALSE, fig.width=11, fig.height=10}
+plot_mean_pathway_activity(gsva_data=gsva_metab_cptac_hnscc,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_cptac_hnscc$kmean_res)
+plot_mean_pathway_activity(gsva_data=gsva_metab_tcga_acc,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_tcga_acc$kmean_res)
+plot_mean_pathway_activity(gsva_data=gsva_metab_tcga_uvm,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_tcga_uvm$kmean_res)
+plot_mean_pathway_activity(gsva_data=gsva_metab_tcga_laml,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_tcga_laml$kmean_res)
+plot_mean_pathway_activity(gsva_data=gsva_metab_tcga_coad,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_tcga_coad$kmean_res)
+plot_mean_pathway_activity(gsva_data=gsva_metab_cptac_coad,
+                                                       kegg_gs=kegg_gs,
+                                                       kmeans_res=kmeans_clusters_cptac_coad$kmean_res)
+```
+
+## Kaplan-Meier analysis of the identified metabolic clusters
+
+```{r km_analysis, message=FALSE, warning=FALSE, fig.width=8}
+# CPTAC-HNSC data:
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_cptac_hnscc $kmean_res,
+                        clinical_data=clinical_cptac_hnscc,
+                        sample_id_col="case_id",
+                        surv_status_col="overall_free_status",
+                        surv_time_col="overall_survival")
+
+# TCGA-ACC data:
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_tcga_acc$kmean_res,
+                        clinical_data=clinical_cptac_acc,
+                        sample_id_col="case_id",
+                        surv_status_col="overall_free_status",
+                        surv_time_col="overall_survival")
+
+# TCGA-UVM data:
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_tcga_uvm$kmean_res,
+                        clinical_data=clinical_cptac_uvm,
+                        sample_id_col="case_id",
+                        surv_status_col="overall_free_status",
+                        surv_time_col="overall_survival")
+
+# TCGA-LAML data:
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_tcga_laml$kmean_res,
+                        clinical_data=clinical_cptac_laml,
+                        sample_id_col="case_id",
+                        surv_status_col="overall_free_status",
+                        surv_time_col="overall_survival")
+
+# TCGA-COAD data:
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_tcga_coad$kmean_res,
+                        clinical_data=clinical_tcga_coad,
+                        sample_id_col="case_id",
+                        surv_status_col="overall_free_status",
+                        surv_time_col="overall_survival")
+
+```
+
+```{r}
+sessionInfo()
+```
