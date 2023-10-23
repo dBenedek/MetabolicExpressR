@@ -40,13 +40,12 @@ The main steps are:
 # Set wd to current location:
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-########## Load source codes and libraries
+########## Load libraries
 
 library("tidyverse")
 library("fgsea")
-
-devtools::load_all(getwd())
-?run_gsva_metabolic
+# devtools::install_github("dBenedek/MetabolicExpressR")
+library("MetabolicExpressR")
 
 ########## Load data
 
