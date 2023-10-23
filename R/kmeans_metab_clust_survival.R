@@ -30,23 +30,23 @@ kmeans_metab_clust_surv <- function(kmeans_res,
   
   # Merge data:
   surv_data <-  kmeans_res %>% 
-    left_join(clinical_data, by = c("sample_ID" = sample_id_col)) %>% 
-    mutate(cluster = as.factor(cluster))
+    dplyr::left_join(clinical_data, by = c("sample_ID" = sample_id_col)) %>% 
+    dplyr::mutate(cluster = as.factor(cluster))
   
   # Run KM analysis:
   formula <- as.formula(paste("Surv(", surv_time_col, 
                               ",", surv_status_col, ") ~ cluster"))
-  fit <- surv_fit(formula, data = surv_data)
+  fit <- survminer::surv_fit(formula, data = surv_data)
   
   # Plot:
-  survplot <- ggsurvplot(
+  survplot <- survminer::ggsurvplot(
     fit,
     data = surv_data,  
     pval = TRUE,
     conf.int = TRUE,
-    title = str_replace_all(eval(surv_time_col),
+    title = stringr::str_replace_all(eval(surv_time_col),
                             "_", " ") %>% 
-      str_to_title,
+      stringr::str_to_title,
     conf.int.style = "step",
     xlab = "Time in days",
     ggtheme = theme_light(),

@@ -20,36 +20,36 @@ plot_mean_pathway_activity <- function(gsva_data,
      
   # pathways category data:
   pathways <- data.frame(name=names(kegg_gs)) %>% 
-    mutate(category=str_replace(as.character(name), "^\\d+\\s", ""),
+    dplyr::mutate(category=str_replace(as.character(name), "^\\d+\\s", ""),
            category=str_replace(as.character(category), "\\s-\\s\\d+.+", "")) %>% 
-    mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
+    dplyr::mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH.*", "")) %>% 
-    arrange(category)
+    dplyr::arrange(category)
   
   # prepare plot data:
   plot_data <- gsva_data |> 
     t() |> 
     as.data.frame() |> 
-    rownames_to_column("sample_ID") |> 
-    pivot_longer(-sample_ID,
+    tibble::rownames_to_column("sample_ID") |> 
+    tidyr::pivot_longer(-sample_ID,
                  names_to="pathway",
                  values_to="ES") |> 
-    left_join(kmeans_res,
+    dplyr::left_join(kmeans_res,
               by="sample_ID") |> 
     dplyr::select(-sample_ID) |> 
-    group_by(pathway, cluster) |> 
-    summarise(across(everything(), mean, na.rm = TRUE)) |> 
-    mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+"),
+    dplyr::group_by(pathway, cluster) |> 
+    dplyr::summarise(across(everything(), mean, na.rm = TRUE)) |> 
+    dplyr::mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH.*", ""),
            cluster=as.factor(cluster)) |> 
-    left_join(pathways,
+    dplyr::left_join(pathways,
               by="pathway") |> 
-    arrange(factor(pathway, levels = rev(pathways$pathway)))
+    dplyr::arrange(factor(pathway, levels = rev(pathways$pathway)))
   
   # create barplot:
-  barplot <- ggplot(plot_data, aes(x=pathway, y=ES, fill=cluster))+
+  barplot <- ggplot2::ggplot(plot_data, aes(x=pathway, y=ES, fill=cluster))+
     geom_col(position=position_dodge2(preserve = "single"), 
              width=.6)+
     coord_flip()+

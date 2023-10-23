@@ -42,7 +42,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
   results <- vector("list", length(selected))
   
   for (i in 1:length(selected)) {
-    results[[i]] <- try(NbClust(t(gsva_data), 
+    results[[i]] <- try(NbClust::NbClust(t(gsva_data), 
                                 min.nc=2, 
                                 max.nc=10, 
                                 method="kmeans", 
@@ -56,50 +56,50 @@ kmeans_gsva_metabolic <- function(gsva_data,
     as.data.frame() %>% 
     t() %>% 
     as.data.frame() %>% 
-    arrange(Number_clusters) %>% 
-    group_by(Number_clusters) %>% 
-    summarize(count=n()) %>% 
-    arrange(desc(count)) %>% 
+    dplyr::arrange(Number_clusters) %>% 
+    dplyr::group_by(Number_clusters) %>% 
+    dplyr::summarize(count=n()) %>% 
+    dplyr::arrange(desc(count)) %>% 
     head(1) %>% 
-    pull(Number_clusters)
+    dplyr::pull(Number_clusters)
   }
   
   # Perform K-means clustering:
   set.seed(123)
-  km_res <- kmeans(t(gsva_data), 
+  km_res <- stats::kmeans(t(gsva_data), 
                    k, 
                    nstart = 100,
                    iter.max = 100)
   
   # Plot heatmap:
   pathways <- data.frame(name=names(kegg_gs)) %>% 
-    mutate(category=str_replace(as.character(name), "^\\d+\\s", ""),
+    dplyr::mutate(category=str_replace(as.character(name), "^\\d+\\s", ""),
            category=str_replace(as.character(category), "\\s-\\s\\d+.+", "")) %>% 
-    mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
+    dplyr::mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH.*", "")) %>% 
-    arrange(category)
+    dplyr::arrange(category)
   
   plot_data <- gsva_data %>% 
     scale() %>% 
     as.data.frame() %>% 
-    rownames_to_column("pathway") %>% 
-    mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+\\[PATH"),
+    tibble::rownames_to_column("pathway") %>% 
+    dplyr::mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+\\[PATH"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH", "")) %>% 
-    column_to_rownames("pathway")
+    tibble::column_to_rownames("pathway")
   
   plot_annot <- as.data.frame(km_res$cluster) %>% 
     dplyr::rename("cluster"="km_res$cluster") %>% 
-    rownames_to_column("sample") %>% 
-    arrange(cluster) %>% 
-    mutate(cluster=factor(cluster)) %>% 
-    column_to_rownames("sample")
+    tibble::rownames_to_column("sample") %>% 
+    dplyr::arrange(cluster) %>% 
+    dplyr::mutate(cluster=factor(cluster)) %>% 
+    tibble::column_to_rownames("sample")
   
   plot_data <- plot_data %>% 
     dplyr::select(rownames(plot_annot))
   
-  row_ha = rowAnnotation(df = data.frame(rownames(plot_data)) %>% 
+  row_ha = ComplexHeatmap::rowAnnotation(df = data.frame(rownames(plot_data)) %>% 
                            left_join(pathways,
                                      by=c("rownames.plot_data."="pathway")) %>% 
                            dplyr::select(category),
@@ -117,11 +117,11 @@ kmeans_gsva_metabolic <- function(gsva_data,
                                                  "Xenobiotics biodegradation and metabolism"="#ECEFF1")),
                          show_annotation_name = F)
   
-  column_ha = HeatmapAnnotation(cluster = plot_annot$cluster, 
+  column_ha = ComplexHeatmap::HeatmapAnnotation(cluster = plot_annot$cluster, 
                                 show_annotation_name = T,
                                 annotation_name_side = "left")
   
-  heatmap <- Heatmap(plot_data,
+  heatmap <- ComplexHeatmap::Heatmap(plot_data,
                      cluster_rows = F,
                      cluster_columns = F,
                      col = rev(viridis(n=100, option="magma")),
