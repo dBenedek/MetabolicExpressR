@@ -23,8 +23,6 @@ kmeans_metab_clust_surv <- function(kmeans_res,
                                     surv_status_col, 
                                     surv_time_col) {
   
-  library("survival")
-  
   # This function looks for association between the identified metabolic clusters and survival
   
   if(!is.data.frame(kmeans_res)) stop("kmeans_res must be a dataframe")
@@ -39,7 +37,7 @@ kmeans_metab_clust_surv <- function(kmeans_res,
     dplyr::mutate(cluster = as.factor(cluster))
   
   # Run KM analysis:
-  formula <- as.formula(paste("Surv(", surv_time_col, 
+  formula <- as.formula(paste("survival::Surv(", surv_time_col, 
                               ",", surv_status_col, ") ~ cluster"))
   fit <- survminer::surv_fit(formula, data = surv_data)
   
@@ -51,7 +49,7 @@ kmeans_metab_clust_surv <- function(kmeans_res,
     conf.int = TRUE,
     title = stringr::str_replace_all(eval(surv_time_col),
                             "_", " ") %>% 
-      stringr::str_to_title,
+      stringr::str_to_title(),
     conf.int.style = "step",
     xlab = "Time in days",
     ggtheme = theme_light(),
