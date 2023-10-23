@@ -23,6 +23,7 @@ run_gsva_metabolic <- function(gene_exp_data,
   
   if(!is.data.frame(gene_exp_data)) stop("gene_exp_data must be a dataframe")
   if(!is.character(kcdf)) stop('kcdf must be a character ("Gaussian" or "Poisson")')
+  if(!kcdf %in% c("Gaussian", "Poisson")) stop('kcdf should be either "Gaussian" or "Poisson"')
   if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
   
   # Filter rows with 0 variance:

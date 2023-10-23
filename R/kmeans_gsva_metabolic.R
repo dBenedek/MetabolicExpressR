@@ -32,6 +32,8 @@ kmeans_gsva_metabolic <- function(gsva_data,
   if(!is.matrix(gsva_data)) stop("gsva_data must be an N x M matrix with N pathways and M samples")
   if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
   if(!user_def_k %in% c(TRUE, FALSE)) stop("user_def_k must be either FALSE (default) or TRUE")
+  if(!is.null(k) & isFALSE(user_def_k)) message("Warning: user_def_k = FALSE, so optimal k will be used")
+  if(isTRUE(user_def_k) & is.null(k)) stop("if user_def_k = TRUE then you should specify the parameter k")
   if(!is.null(k)){
     if(!is.numeric(k) | k > ncol(gsva_data)) stop("k should be numeric and smaller than the number of samples")
   }
