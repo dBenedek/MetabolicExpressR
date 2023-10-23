@@ -17,6 +17,7 @@
 #' @import stats
 #' @import ComplexHeatmap
 #' @import tibble
+#' @import viridis
 #' @export
 kmeans_gsva_metabolic <- function(gsva_data,
                                   kegg_gs,
@@ -129,7 +130,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
   heatmap <- ComplexHeatmap::Heatmap(plot_data,
                      cluster_rows = F,
                      cluster_columns = F,
-                     col = rev(viridis(n=100, option="magma")),
+                     col = rev(viridis::viridis(n=100, option="magma")),
                      show_column_names = F,
                      name="GSVA score",
                      row_names_max_width = max_text_width(
