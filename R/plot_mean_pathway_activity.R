@@ -1,3 +1,14 @@
+#' Plot mean pathway enrichment scores per cluster and pathway
+#'
+#' Creates a barplot of mean GSVA enrichment scores per cluster and pathway 
+#' (pathways are grouped by main KEGG metabolic category)
+#' @param gsva_data N x M matrix with N pathways and M tumor samples
+#' @param kegg_gs N long named list of KEGG metabolic pathways gene set
+#' @param kmeans_res Data frame holding the cluster membership of each sample
+#' @return A barplot of mean enrichment scores
+#' @examples 
+#' plot_mean_pathway_activity(gsva_matrix, kegg_gs, kmeans_res);
+#' @export
 plot_mean_pathway_activity <- function(gsva_data,
                                        kegg_gs,
                                        kmeans_res){

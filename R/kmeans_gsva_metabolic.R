@@ -1,3 +1,18 @@
+#' K-means clustering on GSVA matrix of KEGG metabolic pathway scores 
+#' Performs k-means clustering with optimal k or user-defined k on the GSVA 
+#' matrix of KEGG metabolic pathway enrichment scores of tumors
+#' @param gsva_data N x M matrix with N pathways and M tumor samples
+#' @param kegg_gs N long named list of KEGG metabolic pathways gene set
+#' @param user_def_k Logical, whether to use or don't user-defined k for k-means 
+#' clustering (default: FALSE)
+#' @param k Numeric, user-defined k for k-means clustering (default: NULL)
+#' @return A data frame with cluster membership of each sample, and a heatmap 
+#' plot with GSVA enrichment scores per tumor and pathway (samples are 
+#' ordered by cluster)
+#' @examples 
+#' kmeans_gsva_metabolic(gsva_matrix, kegg_gs);
+#' kmeans_gsva_metabolic(gsva_matrix, kegg_gs, user_def_k=TRUE, k=3);
+#' @export
 kmeans_gsva_metabolic <- function(gsva_data,
                                   kegg_gs,
                                   user_def_k=FALSE,

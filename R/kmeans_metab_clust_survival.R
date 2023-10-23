@@ -1,3 +1,19 @@
+#' Plot Kaplan-Meier analysis of clusters for the selected endpoint
+#'
+#' Creates a Kaplan-Meier (KM) plot of clusters for the selected clinical 
+#' endpoint
+#' @param kmeans_res Data frame holding the cluster membership of each sample
+#' @param clinical_data Data frame with survival data of the cases analyzed
+#' @param sample_id_col Column name of sample IDs in the clinical_data table
+#' @param surv_status_col Column name of survival status (such as overall 
+#' survival status) in the clinical_data table
+#' @param surv_time_col Column name of survival time (such as overall survival time) 
+#' in the clinical_data table
+#' @return A Kaplan-Meier plot of the clusters for the selected endpoint
+#' @examples 
+#' kmeans_metab_clust_surv(kmeans_results, clinical_table, "case_id", 
+#' "overall_surv_status", "overall_surv_time");
+#' @export
 kmeans_metab_clust_surv <- function(kmeans_res, 
                                     clinical_data, 
                                     sample_id_col, 

@@ -1,3 +1,18 @@
+#' Gene Set Variation Analysis (GSVA) on gene expression data of tumors with 
+#' KEGG metabolic pathways
+#'
+#' Performs Gene Set Variation Analysis (GSVA) on gene expression matrix of 
+#' tumor samples using KEGG metabolic pathways gene set collection
+#' @param gene_exp_data N x M gene expression matrix with rows (row names) as 
+#' genes and samples as column names 
+#' @param kcdf Character, either "Gaussian" or "Poisson" 
+#' (see GSVA documentation)
+#' @param kegg_gs N long named list of KEGG metabolic pathways gene set
+#' @return GSVA results matrix with enrichment scores of samples per KEGG 
+#' metabolic pathway
+#' @examples 
+#' run_gsva_metabolic(gene_exp_matrix, "Gaussian", kegg_gs);
+#' @export
 run_gsva_metabolic <- function(gene_exp_data,
                                kcdf,
                                kegg_gs){
