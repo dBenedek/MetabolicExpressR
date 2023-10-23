@@ -1,4 +1,4 @@
-# Metabolic subtyping of patient tumors from gene expression data
+# MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -9,7 +9,7 @@ A detailed tutorial can be found [here](https://github.com/dBenedek/genexp_metab
 Clone the repository:
 
 ```sh
-git clone https://github.com/dBenedek/genexp_metabolic_subtyping.git && cd genexp_metabolic_subtyping
+git clone https://github.com/dBenedek/MetabolicExpressR.git && cd MetabolicExpressR
 ```
 
 ## Features
