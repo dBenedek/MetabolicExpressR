@@ -133,7 +133,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
                      col = rev(viridis::viridis(n=100, option="magma")),
                      show_column_names = F,
                      name="GSVA score",
-                     row_names_max_width = max_text_width(
+                     row_names_max_width = ComplexHeatmap::max_text_width(
                        rownames(plot_data), 
                        gp = gpar(fontsize = 12)
                        ),
