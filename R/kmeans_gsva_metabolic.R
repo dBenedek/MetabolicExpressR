@@ -18,11 +18,6 @@ kmeans_gsva_metabolic <- function(gsva_data,
                                   user_def_k=FALSE,
                                   k=NULL){
   
-  library("tidyverse")
-  library("ComplexHeatmap")
-  library("viridis")
-  library("NbClust")
-  
   # Runs K-means clustering with the optimal K (or user defined k)
   # on the GSVA KEGG metabolic data
   # and assigns cluster membership to samples

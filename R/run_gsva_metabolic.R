@@ -16,8 +16,6 @@
 run_gsva_metabolic <- function(gene_exp_data,
                                kcdf,
                                kegg_gs){
-  library("GSVA")
-  library("parallel")
   
   # Performs GSVA with the KEGG metabolic gene sets on the normalized, filtered
   # gene expression data, returns a data frame with ES scores per pathway

@@ -20,10 +20,6 @@ kmeans_metab_clust_surv <- function(kmeans_res,
                                     surv_status_col, 
                                     surv_time_col) {
   
-  library("survival")
-  library("survminer")
-  library("tidyverse")
-  
   # This function looks for association between the identified metabolic clusters and survival
   
   if(!is.data.frame(kmeans_res)) stop("kmeans_res must be a dataframe")

@@ -12,8 +12,6 @@
 plot_mean_pathway_activity <- function(gsva_data,
                                        kegg_gs,
                                        kmeans_res){
-  library("tidyverse")
-  
   # This function plots the mean GSVA activity per pathway and cluster
   
   if(!is.data.frame(kmeans_res)) stop("kmeans_res must be a dataframe")
