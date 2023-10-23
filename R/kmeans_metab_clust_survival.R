@@ -37,7 +37,7 @@ kmeans_metab_clust_surv <- function(kmeans_res,
     dplyr::mutate(cluster = as.factor(cluster))
   
   # Run KM analysis:
-  formula <- as.formula(paste("Surv(", surv_time_col, 
+  formula <- as.formula(paste("survival::Surv(", surv_time_col, 
                               ",", surv_status_col, ") ~ cluster"))
   fit <- survminer::surv_fit(formula, data = surv_data)
   
