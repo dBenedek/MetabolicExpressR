@@ -135,7 +135,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
                      name="GSVA score",
                      row_names_max_width = ComplexHeatmap::max_text_width(
                        rownames(plot_data), 
-                       gp = gpar(fontsize = 12)
+                       gp = grid::gpar(fontsize = 12)
                        ),
                      column_split = plot_annot$cluster,
                      column_order = colnames(plot_data),
