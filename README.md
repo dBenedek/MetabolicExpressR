@@ -6,10 +6,8 @@ A detailed tutorial can be found [here](https://github.com/dBenedek/genexp_metab
 
 ## Installation
 
-Clone the repository:
-
-```sh
-git clone https://github.com/dBenedek/MetabolicExpressR.git && cd MetabolicExpressR
+```r
+devtools::install_github("dBenedek/MetabolicExpressR")
 ```
 
 ## Features
