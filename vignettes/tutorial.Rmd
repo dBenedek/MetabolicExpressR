@@ -66,8 +66,9 @@ clinical_cptac_hnscc  <- clinical_cptac_hnscc [-1,] %>%
          overall_survival=as.numeric(overall_survival),
          overall_free_status=as.numeric(overall_free_status),
          progression_free_status=as.numeric(progression_free_status),
-         progression_free_survival=as.numeric(progression_free_survival))
-
+         progression_free_survival=as.numeric(progression_free_survival)) %>% 
+  filter(P16!= "Positive (>70% nuclear and cytoplasmic staining)" &
+           case_id %in% colnames(gene_exp_cptac_hnscc))
 
 # TCGA-ACC
 gene_exp_tcga_acc <- read.table("../data/TCGA_ACC/ACC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt",
@@ -253,7 +254,7 @@ plot_mean_pathway_activity(gsva_data=gsva_metab_cptac_coad,
 
 ```{r km_analysis, message=FALSE, warning=FALSE, fig.width=8}
 # CPTAC-HNSC data:
-kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_cptac_hnscc $kmean_res,
+kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_cptac_hnscc$kmean_res,
                         clinical_data=clinical_cptac_hnscc,
                         sample_id_col="case_id",
                         surv_status_col="overall_free_status",
