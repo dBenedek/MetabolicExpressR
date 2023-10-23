@@ -1,5 +1,7 @@
-Package: gMPS
+Package: MetabolicExpressR
 Type: Package
-Title: Metabolic subtyping of patient tumors from gene expression data
+Title: MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data
 Version: 0.0.1.0
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
