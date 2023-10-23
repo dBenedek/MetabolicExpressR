@@ -1,5 +1,5 @@
 ---
-title: "Metabolic subtyping of patient tumors from gene expression data"
+title: "MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data"
 author: "Benedek Danko"
 output:
   BiocStyle::html_document:
@@ -8,7 +8,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{genexp_metabolic_subtyping}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}  
 ---
 
 ```{r setup, include=FALSE}
@@ -20,15 +20,15 @@ knitr::opts_chunk$set(echo = TRUE,
                     tidy = TRUE)
 ```
 
-# Metabolic subtyping of patient tumors from gene expression data
+# MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data
 
 This package aims to perform metabolic pathway-based subytping of patient tumor samples from gene expression data.    
 
 The main steps are:    
 1. Perform GSVA on cancer patient gene expression data using KEGG metabolic pathways.    
-2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or can be user specified.    
-3. Summarize pathway activity per cluster: e.g. mean pathway activity per cluster, or do differential testing.    
-4. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.    
+2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or can be user-specified.    
+3. Summarize pathway activity per cluster: i.e. mean pathway activity per cluster, or do differential testing.    
+4. Perform Kaplan-Meier (KM) analysis with clusters if survival data are present.    
 
 ## Introduction
 
@@ -45,10 +45,8 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library("tidyverse")
 library("fgsea")
 
-source("../R/run_gsva_metabolic.R")
-source("../R/kmeans_gsva_metabolic.R")
-source("../R/kmeans_metab_clust_survival.R")
-source("../R/plot_mean_pathway_activity.R")
+devtools::load_all(getwd())
+?run_gsva_metabolic
 
 ########## Load data
 
