@@ -8,6 +8,10 @@
 #' @return A barplot of mean enrichment scores
 #' @examples 
 #' plot_mean_pathway_activity(gsva_matrix, kegg_gs, kmeans_res);
+#' @import dplyr
+#' @import tidyr
+#' @import tibble
+#' @import ggplot2
 #' @export
 plot_mean_pathway_activity <- function(gsva_data,
                                        kegg_gs,

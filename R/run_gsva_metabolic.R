@@ -12,6 +12,7 @@
 #' metabolic pathway
 #' @examples 
 #' run_gsva_metabolic(gene_exp_matrix, "Gaussian", kegg_gs);
+#' @import GSVA
 #' @export
 run_gsva_metabolic <- function(gene_exp_data,
                                kcdf,

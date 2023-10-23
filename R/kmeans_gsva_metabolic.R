@@ -12,6 +12,11 @@
 #' @examples 
 #' kmeans_gsva_metabolic(gsva_matrix, kegg_gs);
 #' kmeans_gsva_metabolic(gsva_matrix, kegg_gs, user_def_k=TRUE, k=3);
+#' @import NbClust
+#' @import dplyr
+#' @import stats
+#' @import ComplexHeatmap
+#' @import tibble
 #' @export
 kmeans_gsva_metabolic <- function(gsva_data,
                                   kegg_gs,

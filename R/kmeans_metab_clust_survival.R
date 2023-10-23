@@ -13,6 +13,9 @@
 #' @examples 
 #' kmeans_metab_clust_surv(kmeans_results, clinical_table, "case_id", 
 #' "overall_surv_status", "overall_surv_time");
+#' @import dplyr
+#' @import survminer
+#' @import survival
 #' @export
 kmeans_metab_clust_surv <- function(kmeans_res, 
                                     clinical_data, 
