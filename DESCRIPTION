@@ -1,7 +1,18 @@
 Package: MetabolicExpressR
 Type: Package
 Title: MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data
+Description: This package performs metabolic pathway-based subtyping of tumor samples from gene expression data 
+Authors@R: person("Benedek", "Danko", email = "benedek.danko@helmholtz-munich.de", role = c("cre", "aut"))
 Version: 0.0.1.0
+License: MIT + file LICENSE
+Encoding: UTF-8
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
+Depends:
+    R (>= 4.3.1)
+Imports: tidyverse, fgsea, GSVA, survminer,
+    survival, ComplexHeatmap, viridis, NbClust, parallel
 Suggests: BiocStyle, knitr, rmarkdown
+URL: https://github.com/dBenedek/MetabolicExpressR
+BugReports: https://github.com/dBenedek/MetabolicExpressR/issues
+
