@@ -1,4 +1,5 @@
 #' K-means clustering on GSVA matrix of KEGG metabolic pathway scores 
+#' 
 #' Performs k-means clustering with optimal k or user-defined k on the GSVA 
 #' matrix of KEGG metabolic pathway enrichment scores of tumors
 #' @param gsva_data N x M matrix with N pathways and M tumor samples
