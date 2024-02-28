@@ -8,16 +8,16 @@ KEGG metabolic pathways}
 run_gsva_metabolic(gene_exp_data, kcdf, kegg_gs)
 }
 \arguments{
-\item{gene_exp_data}{N x M gene expression matrix with rows (row names) as 
-genes and samples as column names}
+\item{gene_exp_data}{N x M gene expression matrix genes as 
+row names and samples as column names}
 
 \item{kcdf}{Character, either "Gaussian" or "Poisson" 
 (see GSVA documentation)}
 
-\item{kegg_gs}{N long named list of KEGG metabolic pathways gene set}
+\item{kegg_gs}{Named list with K elements of KEGG metabolic pathways gene set}
 }
 \value{
-GSVA results matrix with enrichment scores of samples per KEGG 
+A K x M matrix with enrichment scores of samples per KEGG 
 metabolic pathway
 }
 \description{

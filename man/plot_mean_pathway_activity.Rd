@@ -9,7 +9,7 @@ plot_mean_pathway_activity(gsva_data, kegg_gs, kmeans_res)
 \arguments{
 \item{gsva_data}{N x M matrix with N pathways and M tumor samples}
 
-\item{kegg_gs}{N long named list of KEGG metabolic pathways gene set}
+\item{kegg_gs}{Named list with K elements of KEGG metabolic pathways gene set}
 
 \item{kmeans_res}{Data frame holding the cluster membership of each sample}
 }

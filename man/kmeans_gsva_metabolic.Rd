@@ -2,18 +2,16 @@
 % Please edit documentation in R/kmeans_gsva_metabolic.R
 \name{kmeans_gsva_metabolic}
 \alias{kmeans_gsva_metabolic}
-\title{K-means clustering on GSVA matrix of KEGG metabolic pathway scores 
-Performs k-means clustering with optimal k or user-defined k on the GSVA 
-matrix of KEGG metabolic pathway enrichment scores of tumors}
+\title{K-means clustering on GSVA matrix of KEGG metabolic pathway scores}
 \usage{
 kmeans_gsva_metabolic(gsva_data, kegg_gs, user_def_k = FALSE, k = NULL)
 }
 \arguments{
 \item{gsva_data}{N x M matrix with N pathways and M tumor samples}
 
-\item{kegg_gs}{N long named list of KEGG metabolic pathways gene set}
+\item{kegg_gs}{Named list with K elements of KEGG metabolic pathways gene set}
 
-\item{user_def_k}{Logical, whether to use or don't user-defined k for k-means 
+\item{user_def_k}{Logical, whether to use a user-defined k for k-means 
 clustering (default: FALSE)}
 
 \item{k}{Numeric, user-defined k for k-means clustering (default: NULL)}
@@ -24,7 +22,6 @@ plot with GSVA enrichment scores per tumor and pathway (samples are
 ordered by cluster)
 }
 \description{
-K-means clustering on GSVA matrix of KEGG metabolic pathway scores 
 Performs k-means clustering with optimal k or user-defined k on the GSVA 
 matrix of KEGG metabolic pathway enrichment scores of tumors
 }
