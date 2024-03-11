@@ -1,4 +1,4 @@
-# MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data
+# MetabolicExpressR: Metabolic subtyping of patient tumors from gene expression data  <img src="badge.png" align="right" height="139" />
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
