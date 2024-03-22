@@ -28,7 +28,8 @@ The main steps are:
 1. Perform GSVA on cancer patient gene expression data using KEGG metabolic pathways.    
 2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or can be user-specified.    
 3. Summarize pathway activity per cluster: i.e. mean pathway activity per cluster, or do differential testing.    
-4. Perform Kaplan-Meier (KM) analysis with clusters if survival data are present.    
+4. Run [PROGENy](https://saezlab.github.io/progeny/) on the gene expression data of tumors and compare signature activity scores between the identified clusters.    
+5. Perform Kaplan-Meier (KM) analysis with clusters if survival data are present.    
 
 ## Introduction
 
