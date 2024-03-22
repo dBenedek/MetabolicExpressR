@@ -15,7 +15,8 @@ devtools::install_github("dBenedek/MetabolicExpressR")
 1. Perform Gene Set Variation Analysis ([GSVA](https://doi.org/10.1186/1471-2105-14-7)) on cancer patient gene expression data using [KEGG metabolic pathways](https://www.genome.jp/kegg/pathway.html#metabolism). Potentially non-cancer data can be used as well.
 2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or user-specified k is used.
 3. Summarize pathway "expression" per cluster: i.e. mean pathway activity per cluster.
-4. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.
+4. Run [PROGENy](https://saezlab.github.io/progeny/) on the gene expression data of tumors and compare signature activity scores between the identified clusters. 
+5. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.
 
 ## Usage 
 
@@ -59,6 +60,18 @@ plot_mean_pathway_activity(gsva_data = gsva_results,
                            kegg_gs = kegg_gs,
                            kmeans_res = kmeans_results$kmean_res)
 ```
+
+### PROGENy analysis and signature activity comparison between the identified clusters
+
+From the website of PROGENy: "PROGENy is resource that leverages a large compendium of publicly available signaling perturbation experiments to yield a common core of pathway responsive genes for human and mouse. These, coupled with any statistical method, can be used to infer pathway activities from bulk or single-cell transcriptomics." Thus, it aims to quantify the activity of 14 signatures which are very often disturbed in several cancer entities. These signatures are androgen, EGFR, estrogen, hypoxia, JAK-STAT, MAPK, NFkB, p53, PI3K, TGFb, TNFa, Trail, VEGF, and WNT signaling.
+
+```r
+progeny_results <- run_progeny(gene_exp_data = gene_exp, 
+				kmeans_res = kmeans_clusters$kmean_res)
+progeny_results$progeny_boxplot
+```
+
+The output is a boxplot (`progeny_boxplot`) with signaling activity scores per pathway compared between the identified clusters. In addition, differential testing P-value (Wilcoxon or Kruskal-Wallis test) is indicated in the facet header of each signature. The function outputs a data frame (`progeny_res`) as well, with PROGENy pathway activity scores per sample and signature. 
 
 ### Kaplan-Meier analysis with the identified clusters
 
