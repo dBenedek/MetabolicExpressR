@@ -55,14 +55,14 @@ run_progeny <- function(gene_exp_data,
   
   # Do differential testing for pathway acrivity between clusters -
   # Wilcoxon test if clusters == 2, Kruskal-Wallis test, if k > 2:
-  if (unique(kmeans_res$cluster) == 2){
+  if (length(unique(kmeans_res$cluster)) == 2){
     testing_results <- progeny_scores_matrix %>% 
       dplyr::group_by(pathway) %>% 
       dplyr::do(w = stats::wilcox.test(score~cluster, data=., paired = FALSE)) %>% 
       dplyr::summarise(pathway, p.value = w$p.value) %>% 
       dplyr::mutate(p.adj=stats::p.adjust(p.value, method="BH")) %>% 
       dplyr::arrange(p.adj, p.value)
-  } else if (unique(kmeans_res$cluster) > 2){
+  } else if (length(unique(kmeans_res$cluster)) > 2){
     testing_results <- progeny_scores_matrix %>% 
       dplyr::group_by(pathway) %>% 
       dplyr::do(k = stats::kruskal.test(score~cluster, data=.)) %>% 
