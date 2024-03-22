@@ -247,6 +247,37 @@ plot_mean_pathway_activity(gsva_data=gsva_metab_cptac_coad,
                                                        kmeans_res=kmeans_clusters_cptac_coad$kmean_res)
 ```
 
+## PROGENy analysis and comparison of pathways between the clusters
+
+From the website of [PROGENy](https://saezlab.github.io/progeny/): "PROGENy is resource that leverages a large compendium of publicly available signaling perturbation experiments to yield a common core of pathway responsive genes for human and mouse. These, coupled with any statistical method, can be used to infer pathway activities from bulk or single-cell transcriptomics."
+
+```{r progeny_analysis, message=FALSE, warning=FALSE, fig.width=12, fig.height=10}
+# CPTAC-HNSC data:
+progeny_cptac_hnsc <- run_progeny(gene_exp_data = gene_exp_cptac_hnscc,
+                                 kmeans_res = kmeans_clusters_cptac_hnscc$kmean_res)
+progeny_cptac_hnsc$progeny_boxplot
+# TCGA-ACC data:
+progeny_tcga_acc <- run_progeny(gene_exp_data = gene_exp_tcga_acc,
+                                kmeans_res = kmeans_clusters_tcga_acc$kmean_res)
+progeny_tcga_acc$progeny_boxplot
+# TCGA-UVM data:
+progeny_tcga_uvm<- run_progeny(gene_exp_data = gene_exp_tcga_uvm,
+                                kmeans_res = kmeans_clusters_tcga_uvm$kmean_res)
+progeny_tcga_uvm$progeny_boxplot
+# TCGA-LAML data:
+progeny_tcga_lam<- run_progeny(gene_exp_data = gene_exp_tcga_laml,
+                                kmeans_res = kmeans_clusters_tcga_laml$kmean_res)
+progeny_tcga_lam$progeny_boxplot
+# TCGA-COAD data:
+progeny_tcga_coad <- run_progeny(gene_exp_data = gene_exp_tcga_coad,
+                            kmeans_res = kmeans_clusters_tcga_coad$kmean_res)
+progeny_tcga_coad$progeny_boxplot
+# CPTAC-COAD data:
+progeny_cptac_coad <- run_progeny(gene_exp_data = gene_exp_cptac_coad,
+                            kmeans_res = kmeans_clusters_cptac_coad$kmean_res)
+progeny_cptac_coad$progeny_boxplot
+```
+
 ## Kaplan-Meier analysis of the identified metabolic clusters
 
 ```{r km_analysis, message=FALSE, warning=FALSE, fig.width=8}
@@ -284,7 +315,6 @@ kmeans_metab_clust_surv(kmeans_res=kmeans_clusters_tcga_coad$kmean_res,
                         sample_id_col="case_id",
                         surv_status_col="overall_free_status",
                         surv_time_col="overall_survival")
-
 ```
 
 ```{r}
