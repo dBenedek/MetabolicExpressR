@@ -85,8 +85,8 @@ run_progeny <- function(gene_exp_data,
   progeny_cluster_plot <- ggplot2::ggplot(plot_data, 
                                           aes(x=as.factor(cluster), 
                                               y=score))+ 
-    ggplot2::geom_boxplot(outlier.shape = NA, width=.3, alpha=1)+
-    ggplot2::geom_jitter(width = 0.25, alpha=.5)+
+    ggplot2::geom_jitter(width = 0.25, alpha=.4)+
+    ggplot2::geom_boxplot(outlier.shape = NA, width=.3, alpha=.8)+
     facet_wrap(ggplot2::vars(label), scales = "free")+
     ggplot2::theme_bw()+
     ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
