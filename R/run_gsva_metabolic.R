@@ -8,15 +8,18 @@
 #' @param kcdf Character, either "Gaussian" or "Poisson" 
 #' (see GSVA documentation)
 #' @param kegg_gs Named list with K elements of KEGG metabolic pathways gene set
+#' @param n_cores Number of cores used for GSVA calculation (used by BiocParallel::MulticoreParam)
 #' @return A K x M matrix with enrichment scores of samples per KEGG 
 #' metabolic pathway
 #' @examples 
 #' run_gsva_metabolic(gene_exp_matrix, "Gaussian", kegg_gs);
 #' @import GSVA
+#' @import BiocParallel
 #' @export
 run_gsva_metabolic <- function(gene_exp_data,
                                kcdf,
-                               kegg_gs){
+                               kegg_gs,
+                               n_cores){
   
   # Performs GSVA with the KEGG metabolic gene sets on the normalized, filtered
   # gene expression data, returns a data frame with ES scores per pathway
@@ -25,6 +28,7 @@ run_gsva_metabolic <- function(gene_exp_data,
   if(!is.character(kcdf)) stop('kcdf must be a character ("Gaussian" or "Poisson")')
   if(!kcdf %in% c("Gaussian", "Poisson")) stop('kcdf should be either "Gaussian" or "Poisson"')
   if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
+  if(!is.numeric(n_cores)) stop('n_cores must be numeric')
   
   # Filter rows with 0 variance:
   genes_var <- apply(gene_exp_data, 1, var)
@@ -36,7 +40,9 @@ run_gsva_metabolic <- function(gene_exp_data,
                              kcdf=kcdf,
                              minSize=9,
                              maxSize=300)
+  multicoreParam <- BiocParallel::MulticoreParam(workers = n_cores)
   gsva_es <- GSVA::gsva(param=gsvaPar,
+                        BPPARAM=multicoreParam,
                         verbose=FALSE)
   
   return(gsva_es)

@@ -5,7 +5,7 @@
 \title{Gene Set Variation Analysis (GSVA) on gene expression data of tumors with 
 KEGG metabolic pathways}
 \usage{
-run_gsva_metabolic(gene_exp_data, kcdf, kegg_gs)
+run_gsva_metabolic(gene_exp_data, kcdf, kegg_gs, n_cores)
 }
 \arguments{
 \item{gene_exp_data}{N x M gene expression matrix genes as 
@@ -15,6 +15,8 @@ row names and samples as column names}
 (see GSVA documentation)}
 
 \item{kegg_gs}{Named list with K elements of KEGG metabolic pathways gene set}
+
+\item{n_cores}{Number of cores used for GSVA calculation (used by BiocParallel::MulticoreParam)}
 }
 \value{
 A K x M matrix with enrichment scores of samples per KEGG 
