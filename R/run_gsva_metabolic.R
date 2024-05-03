@@ -33,7 +33,9 @@ run_gsva_metabolic <- function(gene_exp_data,
   # Run GSVA:
   gsvaPar <- GSVA::gsvaParam(exprData=gene_exp_data, 
                              geneSets=kegg_gs,
-                             kcdf=kcdf)
+                             kcdf=kcdf,
+                             minSize=9,
+                             maxSize=300)
   gsva_es <- GSVA::gsva(param=gsvaPar,
                         verbose=FALSE)
   
