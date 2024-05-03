@@ -58,7 +58,7 @@ run_progeny <- function(gene_exp_data,
   if (length(unique(kmeans_res$cluster)) == 2){
     testing_results <- progeny_scores_matrix %>% 
       dplyr::group_by(pathway) %>% 
-      dplyr::do(w = stats::wilcox.test(score~cluster, data=., paired = FALSE)) %>% 
+      dplyr::do(w = stats::wilcox.test(score~cluster, data=.)) %>% 
       dplyr::summarise(pathway, p.value = w$p.value) %>% 
       dplyr::mutate(p.adj=stats::p.adjust(p.value, method="BH")) %>% 
       dplyr::arrange(p.adj, p.value)
