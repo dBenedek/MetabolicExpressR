@@ -31,14 +31,11 @@ run_gsva_metabolic <- function(gene_exp_data,
   gene_exp_data <- as.matrix(round(gene_exp_data[genes_var > 0,]))
   
   # Run GSVA:
-  gsva_es <- GSVA::gsva(expr=gene_exp_data, 
-                  gset.idx.list=kegg_gs, 
-                  verbose=FALSE, 
-                  kcdf=kcdf, 
-                  method="gsva", 
-                  min.sz=9, 
-                  max.sz=300,
-                  parallel.sz=1L)
+  gsvaPar <- GSVA::gsvaParam(exprData=gene_exp_data, 
+                             geneSets=kegg_gs,
+                             kcdf=kcdf)
+  gsva_es <- GSVA::gsva(param=gsvaPar,
+                        verbose=FALSE)
   
   return(gsva_es)
 }
