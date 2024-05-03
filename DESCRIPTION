@@ -6,7 +6,7 @@ Authors@R: person("Benedek", "Danko", email = "benedek.danko@helmholtz-munich.de
 Version: 0.0.1.0
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr
 Depends:
     R (>= 4.3.1)
@@ -16,4 +16,3 @@ Imports: tidyverse, fgsea, GSVA, survminer,
 Suggests: BiocStyle, knitr, rmarkdown
 URL: https://github.com/dBenedek/MetabolicExpressR
 BugReports: https://github.com/dBenedek/MetabolicExpressR/issues
-
