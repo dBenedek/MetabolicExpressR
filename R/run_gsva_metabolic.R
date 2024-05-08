@@ -30,20 +30,34 @@ run_gsva_metabolic <- function(gene_exp_data,
   if(!is.list(kegg_gs)) stop("kegg_gs must be a named list (gene set collection) with N elements (pathways)")
   if(!is.numeric(n_cores)) stop('n_cores must be numeric')
   
+  # Check GSVA version:
+  gsva_version <- packageVersion("GSVA")
+  
   # Filter rows with 0 variance:
   genes_var <- apply(gene_exp_data, 1, var)
   gene_exp_data <- as.matrix(round(gene_exp_data[genes_var > 0,]))
   
   # Run GSVA:
-  gsvaPar <- GSVA::gsvaParam(exprData=gene_exp_data, 
-                             geneSets=kegg_gs,
-                             kcdf=kcdf,
-                             minSize=9,
-                             maxSize=300)
   multicoreParam <- BiocParallel::MulticoreParam(workers = n_cores)
-  gsva_es <- GSVA::gsva(param=gsvaPar,
-                        BPPARAM=multicoreParam,
-                        verbose=FALSE)
+  if (gsva_version >= "1.52.0"){
+    gsvaPar <- GSVA::gsvaParam(exprData=gene_exp_data, 
+                               geneSets=kegg_gs,
+                               kcdf=kcdf,
+                               minSize=9,
+                               maxSize=300)
+    gsva_es <- GSVA::gsva(param=gsvaPar,
+                          BPPARAM=multicoreParam,
+                          verbose=FALSE)
+  } else {
+    gsva_es <- GSVA::gsva(expr=gene_exp_data, 
+                          gset.idx.list=kegg_gs, 
+                          verbose=FALSE, 
+                          kcdf=kcdf, 
+                          method="gsva", 
+                          min.sz=9, 
+                          max.sz=300,
+                          parallel.sz=n_cores)
+  }
   
   return(gsva_es)
 }
