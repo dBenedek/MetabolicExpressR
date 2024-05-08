@@ -46,8 +46,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
                 "silhouette", "duda", "pseudot2", "beale", 
                 "ratkowsky", "ball", "ptbiserial", "gap", 
                 "frey", "mcclain", "gamma", "gplus", 
-                "tau", "dunn", "hubert", "sdindex", 
-                "dindex", "sdbw")
+                "tau", "dunn", "sdindex", "sdbw")
   results <- vector("list", length(selected))
   
   for (i in 1:length(selected)) {
