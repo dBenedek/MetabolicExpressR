@@ -67,10 +67,15 @@ kmeans_gsva_metabolic <- function(gsva_data,
         message("Index tested: ", selected[i])
       })}
   
+  # Filter out failed indices:
+  selected <- selected[unlist(lapply(1:length(results), 
+                                     function(x) "Best.nc" %in% names(results[[x]])))]
   results <- results[unlist(lapply(1:length(results), 
                     function(x) "Best.nc" %in% names(results[[x]])))]
+  
   best_nc <- lapply(results, function(x) x$Best.nc)
   names(best_nc) <- selected
+  
   # Optimal number of k:
   k <- best_nc[!sapply(best_nc,is.null)] %>% 
     as.data.frame() %>% 
