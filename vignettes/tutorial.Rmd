@@ -158,32 +158,38 @@ This might take some time, especially for larger (n > 100) data sets.
 # CPTAC-HNSC data:
 gsva_metab_cptac_hnscc  <- run_gsva_metabolic(gene_exp_cptac_hnscc,
                                               kcdf="Gaussian",
-                                              kegg_gs = kegg_gs)
+                                              kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 
 # TCGA-ACC data:
 gsva_metab_tcga_acc <- run_gsva_metabolic(gene_exp_tcga_acc,
                                        kcdf="Gaussian",
-                                              kegg_gs = kegg_gs)
+                                              kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 
 # TCGA-UVM data:
 gsva_metab_tcga_uvm <- run_gsva_metabolic(gene_exp_tcga_uvm,
                                      kcdf="Gaussian",
-                                              kegg_gs = kegg_gs)
+                                              kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 
 # TCGA-LAML data:
 gsva_metab_tcga_laml <- run_gsva_metabolic(gene_exp_tcga_laml,
                                      kcdf="Gaussian",
-                                              kegg_gs = kegg_gs)
+                                              kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 
 # TCGA-COAD data:
 gsva_metab_tcga_coad <- run_gsva_metabolic(gene_exp_tcga_coad,
                                            kcdf="Gaussian",
-                                           kegg_gs = kegg_gs)
+                                           kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 
 # CPTAC-COAD data:
 gsva_metab_cptac_coad <- run_gsva_metabolic(gene_exp_cptac_coad,
                                            kcdf="Gaussian",
-                                              kegg_gs = kegg_gs)
+                                              kegg_gs = kegg_gs,
+                                              n_cores = 1L)
 ```
 
 ## K-means clustering on the GSVA matrix
