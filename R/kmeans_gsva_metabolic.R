@@ -50,13 +50,25 @@ kmeans_gsva_metabolic <- function(gsva_data,
   results <- vector("list", length(selected))
   
   for (i in 1:length(selected)) {
-    results[[i]] <- try(NbClust::NbClust(t(gsva_data), 
-                                min.nc=2, 
-                                max.nc=10, 
-                                method="kmeans", 
-                                index=selected[i]))
-  }
+    possibleError <- tryCatch(
+      {
+      results[[i]] <- NbClust::NbClust(t(gsva_data), 
+                                       min.nc=2, 
+                                       max.nc=10, 
+                                       method="kmeans", 
+                                       index=selected[i])},
+      error = function(e){
+        message("An error occured: ", e$message)
+      },
+      warning = function(w){
+        message("A warning occured: ", w$message)
+      },
+      finally = {
+        message("Index tested: ", selected[i])
+      })}
   
+  results <- results[unlist(lapply(1:length(results), 
+                    function(x) "Best.nc" %in% names(results[[x]])))]
   best_nc <- lapply(results, function(x) x$Best.nc)
   names(best_nc) <- selected
   # Optimal number of k:
