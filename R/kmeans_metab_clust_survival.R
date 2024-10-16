@@ -28,8 +28,8 @@ kmeans_metab_clust_surv <- function(kmeans_res,
   if(!is.data.frame(kmeans_res)) stop("kmeans_res must be a dataframe")
   if(!is.data.frame(clinical_data)) stop("clinical_data must be a dataframe")
   if(!is.character(clinical_data[[sample_id_col]])) stop("sample_id_col must be of character type")
-  if(!is.numeric(clinical_data[[surv_status_col]])) stop("surv_status_col must be of character type")
-  if(!is.numeric(clinical_data[[surv_time_col]])) stop("surv_time_col must be of character type")
+  if(!is.numeric(clinical_data[[surv_status_col]])) stop("surv_status_col must be of numeric type")
+  if(!is.numeric(clinical_data[[surv_time_col]])) stop("surv_time_col must be of numeric type")
   
   # Merge data:
   surv_data <-  kmeans_res %>% 
