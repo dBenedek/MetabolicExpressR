@@ -102,8 +102,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
            category=str_replace(as.character(category), "\\s-\\s\\d+.+", "")) %>% 
     dplyr::mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
-           pathway=str_replace(pathway, "\\s\\[PATH.*", "")) %>% 
-    dplyr::arrange(category)
+           pathway=str_replace(pathway, "\\s\\[PATH.*", "")) 
   
   plot_data <- gsva_data %>% 
     scale() %>% 
@@ -112,6 +111,9 @@ kmeans_gsva_metabolic <- function(gsva_data,
     dplyr::mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+\\[PATH"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH", "")) %>% 
+    dplyr::left_join(pathways, by="pathway") %>% 
+    dplyr::arrange(category, desc(pathway)) %>% 
+    dplyr::select(-category) %>% 
     tibble::column_to_rownames("pathway")
   
   plot_annot <- as.data.frame(km_res$cluster) %>% 
@@ -125,7 +127,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
     dplyr::select(rownames(plot_annot))
   
   row_ha = ComplexHeatmap::rowAnnotation(df = data.frame(rownames(plot_data)) %>% 
-                           left_join(pathways,
+                           dplyr::left_join(pathways,
                                      by=c("rownames.plot_data."="pathway")) %>% 
                            dplyr::select(category),
                          col = list(category = c("Amino acid metabolism"="#EF5350",
@@ -166,7 +168,7 @@ kmeans_gsva_metabolic <- function(gsva_data,
                      width = unit(12, "cm"),
                      border = TRUE,
                      row_split = data.frame(rownames(plot_data)) %>% 
-                       left_join(pathways,
+                       dplyr::left_join(pathways,
                                  by=c("rownames.plot_data."="pathway")) %>% 
                        dplyr::select(category),
                      show_row_names = T,
