@@ -33,7 +33,8 @@ The main steps are:
 
 ## Introduction
 
-...
+The activity of metabolic pathways has a substantial effect on cancer progression and response to therapy. Therefore, the assessment of metabolic pathway expression and stratification of patients into clinically relevant subgroups have a high priority. The library `MetabolicExpressR` aims to provide an R library framework to carry out analyses within this concept. The main idea was developed in the paper of [Danko et al.](https://doi.org/10.1038/s41698-024-00602-0), where metabolic subtyping of head and neck squamous cell carcinoma patients was performed with two metabolic subtypes uncovered showing differing response to adjuvant radio(chemo)therapy.    
+This vignette guides you through the main steps of metabolic subtyping of tumor samples using gene expression data.
 
 ## Load libraries and test data
 
