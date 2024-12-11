@@ -102,7 +102,8 @@ kmeans_gsva_metabolic <- function(gsva_data,
            category=str_replace(as.character(category), "\\s-\\s\\d+.+", "")) %>% 
     dplyr::mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
-           pathway=str_replace(pathway, "\\s\\[PATH.*", "")) 
+           pathway=str_replace(pathway, "\\s\\[PATH.*", ""),
+           pathway=stringr::str_to_title(pathway)) 
   
   plot_data <- gsva_data %>% 
     scale() %>% 
@@ -110,7 +111,8 @@ kmeans_gsva_metabolic <- function(gsva_data,
     tibble::rownames_to_column("pathway") %>% 
     dplyr::mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+\\[PATH"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
-           pathway=str_replace(pathway, "\\s\\[PATH", "")) %>% 
+           pathway=str_replace(pathway, "\\s\\[PATH", ""),
+           pathway=stringr::str_to_title(pathway)) %>% 
     dplyr::left_join(pathways, by="pathway") %>% 
     dplyr::arrange(category, desc(pathway)) %>% 
     dplyr::select(-category) %>% 

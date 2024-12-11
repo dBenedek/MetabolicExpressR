@@ -28,7 +28,8 @@ plot_mean_pathway_activity <- function(gsva_data,
            category=str_replace(as.character(category), "\\s-\\s\\d+.+", "")) %>% 
     dplyr::mutate(pathway=str_extract(name, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
-           pathway=str_replace(pathway, "\\s\\[PATH.*", "")) %>% 
+           pathway=str_replace(pathway, "\\s\\[PATH.*", ""),
+           pathway=stringr::str_to_title(pathway)) %>% 
     dplyr::arrange(category)
   
   # prepare plot data:
@@ -47,6 +48,7 @@ plot_mean_pathway_activity <- function(gsva_data,
     dplyr::mutate(pathway=str_extract(pathway, "-\\s\\d+\\s.+"),
            pathway=str_replace(pathway, "-\\s\\d+\\s", ""),
            pathway=str_replace(pathway, "\\s\\[PATH.*", ""),
+           pathway=stringr::str_to_title(pathway),
            cluster=as.factor(cluster)) |> 
     dplyr::left_join(pathways,
               by="pathway") |> 
