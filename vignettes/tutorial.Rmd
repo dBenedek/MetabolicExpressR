@@ -39,7 +39,8 @@ The main steps are:
 
 ```{r load, message=FALSE, warning=FALSE}
 # Set wd to current location:
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+current_path = rstudioapi::getActiveDocumentContext()$path 
+setwd(dirname(current_path ))
 
 ########## Load libraries
 
