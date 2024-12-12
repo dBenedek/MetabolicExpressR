@@ -15,8 +15,9 @@ devtools::install_github("dBenedek/MetabolicExpressR")
 1. Perform Gene Set Variation Analysis ([GSVA](https://doi.org/10.1186/1471-2105-14-7)) on cancer patient gene expression data using [KEGG metabolic pathways](https://www.genome.jp/kegg/pathway.html#metabolism). Potentially non-cancer data can be used as well.
 2. Perform k-means clustering on the GSVA matrix, identify metabolic subtypes. Optimal number of k is defined based on data or user-specified k is used.
 3. Summarize pathway "expression" per cluster: i.e. mean pathway activity per cluster.
-4. Run [PROGENy](https://saezlab.github.io/progeny/) on the gene expression data of tumors and compare signature activity scores between the identified clusters. 
-5. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.
+4. Perform GSVA on cancer patient gene expression data using MSigDB Hallmarks and compare between the identified clusters.    
+5. Run [PROGENy](https://saezlab.github.io/progeny/) on the gene expression data of tumors and compare signature activity scores between the identified clusters. 
+6. Perform Kaplan-Meier (KM) analysis with clusters if survival data is present.
 
 ## Usage 
 
@@ -28,7 +29,8 @@ The input of GSVA is a normalized gene expression matrix, where row names are ge
 ```r
 gsva_results <- run_gsva_metabolic(gene_exp_data = gene_exp_cptac_hnscc,
                                    kcdf = "Gaussian",
-                                   kegg_gs = kegg_gs)
+                                   kegg_gs = kegg_gs,
+                                   n_cores = 1L)
 dim(gsva_results)
 ```
 
@@ -59,6 +61,18 @@ Here we compare the pathway enrichment scores (pathway "expression") between the
 plot_mean_pathway_activity(gsva_data = gsva_results,
                            kegg_gs = kegg_gs,
                            kmeans_res = kmeans_results$kmean_res)
+```
+
+### MSigDB Hallmarks analysis and comparison between the clusters
+
+```r
+gsva_hallmarks <- run_gsva_hallmarks(gene_exp_cptac_hnscc,
+                                     kcdf = "Gaussian",
+                                     n_cores = 1L)
+                                     
+plot_mean_hallmark_activity(gsva_data = gsva_hallmarks,
+                            kmeans_res = kmeans_results$kmean_res,
+                            hallmarks_data = hallmarks_data)                                     
 ```
 
 ### PROGENy analysis and signature activity comparison between the identified clusters
