@@ -12,7 +12,7 @@
 #' @return A K x M matrix with enrichment scores of samples per KEGG 
 #' metabolic pathway
 #' @examples 
-#' run_gsva_metabolic(gene_exp_matrix, "Gaussian", kegg_gs);
+#' run_gsva_metabolic(gene_exp_matrix, "Gaussian", kegg_gs, 4);
 #' @import GSVA
 #' @import BiocParallel
 #' @export
