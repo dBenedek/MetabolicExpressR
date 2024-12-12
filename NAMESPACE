@@ -2,7 +2,9 @@
 
 export(kmeans_gsva_metabolic)
 export(kmeans_metab_clust_surv)
+export(plot_mean_hallmark_activity)
 export(plot_mean_pathway_activity)
+export(run_gsva_hallmarks)
 export(run_gsva_metabolic)
 export(run_progeny)
 import(BiocParallel)
