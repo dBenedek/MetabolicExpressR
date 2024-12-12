@@ -1,0 +1,51 @@
+Name	Category	Description
+HALLMARK_ADIPOGENESIS	development	adipocyte development
+HALLMARK_ALLOGRAFT_REJECTION	immune	allograft rejection
+HALLMARK_ANDROGEN_RESPONSE	signaling	androgen response
+HALLMARK_ANGIOGENESIS	development	blood vessel formation
+HALLMARK_APICAL_JUNCTION	cellular component	apical junction complex consisting of adherens and tight junctions
+HALLMARK_APICAL_SURFACE	cellular component	membrane proteins in the apical domain
+HALLMARK_APOPTOSIS	pathway	programmed cell death; caspase pathway
+HALLMARK_BILE_ACID_METABOLISM	metabolic	biosynthesis of bile acids
+HALLMARK_CHOLESTEROL_HOMEOSTASIS	metabolic	cholesterol homeostasis
+HALLMARK_COAGULATION	immune	blood coagulation cascade
+HALLMARK_COMPLEMENT	immune	complement cascade
+HALLMARK_DNA_REPAIR	DNA damage	DNA repair
+HALLMARK_E2F_TARGETS	proliferation	cell cycle progression: E2F targets
+HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION	development	epithelial mesenchymal transition
+HALLMARK_ESTROGEN_RESPONSE_EARLY	signaling	early estrogen response
+HALLMARK_ESTROGEN_RESPONSE_LATE	signaling	late estrogen response
+HALLMARK_FATTY_ACID_METABOLISM	metabolic	fatty acid metabolism
+HALLMARK_G2M_CHECKPOINT	proliferation	cell cycle progression: G2/M checkpoint
+HALLMARK_GLYCOLYSIS	metabolic	glycolysis and gluconeogenesis
+HALLMARK_HEDGEHOG_SIGNALING	signaling	Hedgehog signaling
+HALLMARK_HEME_METABOLISM	metabolic	heme metabolism and erythroid lineage
+HALLMARK_HYPOXIA	pathway	response to hypoxia; HIF1A targets
+HALLMARK_IL2_STAT5_SIGNALING	signaling	IL2 STAT5 signaling
+HALLMARK_IL6_JAK_STAT3_SIGNALING	immune	IL6 STAT3 signaling during acute phase response
+HALLMARK_INFLAMMATORY_RESPONSE	immune	inflammation
+HALLMARK_INTERFERON_ALPHA_RESPONSE	immune	interferon alpha response
+HALLMARK_INTERFERON_GAMMA_RESPONSE	immune	interferon gamma response
+HALLMARK_KRAS_SIGNALING_DN	signaling	KRAS signaling, downregulated genes
+HALLMARK_KRAS_SIGNALING_UP	signaling	KRAS signaling, upregulated genes
+HALLMARK_MITOTIC_SPINDLE	proliferation	cell cycle progression: mitotic spindle assembly
+HALLMARK_MTORC1_SIGNALING	signaling	mTORC1 signaling
+HALLMARK_MYC_TARGETS_V1	proliferation	MYC targets, variant 1
+HALLMARK_MYC_TARGETS_V2	proliferation	MYC targets, variant 2
+HALLMARK_MYOGENESIS	development	muscle differentiation
+HALLMARK_NOTCH_SIGNALING	signaling	Notch signaling
+HALLMARK_OXIDATIVE_PHOSPHORYLATION	metabolic	oxidative phosphorylation and citric acid cycle
+HALLMARK_P53_PATHWAY	proliferation	p53 pathway
+HALLMARK_PANCREAS_BETA_CELLS	development	genes specific to pancreatic beta cells
+HALLMARK_PEROXISOME	cellular component	peroxisomes
+HALLMARK_PI3K_AKT_MTOR_SIGNALING	signaling	PI3K signaling via AKT to mTORC1
+HALLMARK_PROTEIN_SECRETION	pathway	protein secretion
+HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY	pathway	reactive oxygen species pathway
+HALLMARK_SPERMATOGENESIS	development	sperm development and male fertility
+HALLMARK_TGF_BETA_SIGNALING	signaling	TGF beta signaling
+HALLMARK_TNFA_SIGNALING_VIA_NFKB	signaling	NFA signaling via NFkB
+HALLMARK_UNFOLDED_PROTEIN_RESPONSE	pathway	unfolded protein response; ER stress
+HALLMARK_UV_RESPONSE_DN	DNA damage	UV response: downregulated genes
+HALLMARK_UV_RESPONSE_UP	DNA damage	UV response: upregulated genes
+HALLMARK_WNT_BETA_CATENIN_SIGNALING	signaling	canonical beta catenin pathway
+HALLMARK_XENOBIOTIC_METABOLISM	metabolic	metabolism of xenobiotics
